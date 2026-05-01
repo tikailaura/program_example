@@ -3,7 +3,7 @@
 import java.util.*;
 
 public class MD4_rogosa {
-    // Dots veselu skaitļu masīvs, kuru jāsakārto ar 4 algoritmiem
+    // Given an array of integers, which must be sorted using 4 algorithms
     static final int[] input = { 54, 70, 75, 63, 17, 59, 87, 16, 93, 81, 60, 67, 90, 53, 
     		88, 9, 61, 8, 96, 98, 12, 34, 66, 76, 38, 55, 58, 27, 92, 45, 41, 4, 
     		20, 22, 69, 77, 86, 35, 19, 32, 49, 15, 29, 23, 83, 95, 25, 91, 33, 
@@ -12,32 +12,32 @@ public class MD4_rogosa {
     		40, 26, 21, 68, 43, 14, 3, 65, 99, 89, 52, 84, 36, 2, 6, 11, 50 }; 
 
     public static void main(String[] args) {
-        // Katram algoritmam veic kārtošanu, izvada rezultātus un salīdzinājumu skaitu
+        // For each algorithm, sort is performed, results and number of comparisons are output
         run("Bubble Sort - Classic", MD4_rogosa::bubbleClassic);
         run("Bubble Sort - Improved 1", MD4_rogosa::bubbleEarlyExit);
         run("Bubble Sort - Improved 2", MD4_rogosa::bubbleAdaptive);
         run("Merge Sort", MD4_rogosa::mergeSort);
 
-        // Secinājumi par veiktspēju
-        System.out.println("\nSecinājumi:");
-        System.out.println("- Merge Sort bija visefektīvākais lielā masīva dēļ (O(n log n)).");
-        System.out.println("- Klasiskais burbulis bija vislēnākais (O(n^2)).");
-        System.out.println("- Uzlabojumi burbuļa algoritmā samazina nevajadzīgus salīdzinājumus.");
+        // Performance conclusions
+        System.out.println("\nConclusions:");
+        System.out.println("- Merge Sort was the most effective because of the large array (O(n log n)).");
+        System.out.println("- The classic bubble was the slowest (O(n^2)).");
+        System.out.println("- Improvements to the bubble algorithm reduce unnecessary comparisons.");
     }
 
-    // Funkcionālais interfeiss, lai viegli nodotu kārtošanas metodes kā parametrus
+    // Functional interface to easily pass sorting methods as parameters
     interface Sorter { int apply(int[] arr); }
 
-    // Izpilda algoritmu, izvada rezultātu un salīdzinājumu skaitu
+    // Executes the algorithm, outputs the result and the number of comparisons
     static void run(String name, Sorter sorter) {
         int[] copy = Arrays.copyOf(input, input.length);
         int comps = sorter.apply(copy);
         System.out.println("\n" + name);
-        System.out.println("Rezultāts: " + Arrays.toString(copy));
-        System.out.println("Salīdzinājumi: " + comps);
+        System.out.println("Result: " + Arrays.toString(copy));
+        System.out.println("Comparisons: " + comps);
     }
 
-    // Klasiskā burbuļa kārtošana: iet cauri visam masīvam vairākas reizes un apmaina blakus esošos elementus
+    // Classic bubble sort: goes through the entire array multiple times and swaps adjacent elements
     static int bubbleClassic(int[] a) {
         int c = 0, n = a.length;
         for (int i = 0; i < n - 1; i++)
@@ -46,36 +46,36 @@ public class MD4_rogosa {
         return c;
     }
 
-    // Burbuļa kārtošana 1: pārtrauc ciklu, ja kārtējo iterāciju laikā netika veikta neviena apmaiņa
+    // Bubble sort 1: terminates the cycle if no swaps were made during the current iterations
     static int bubbleEarlyExit(int[] a) {
         int c = 0, n = a.length;
         for (int i = 0; i < n - 1; i++) {
             boolean swapped = false;
             for (int j = 0; j < n - 1 - i; j++, c++)
                 if (a[j] > a[j + 1]) { swap(a, j, j + 1); swapped = true; }
-            if (!swapped) break; // masīvs jau ir sakārtots
+            if (!swapped) break; // the array is already sorted
         }
         return c;
     }
 
-    // Burbuļa kārtošana 2: pēdējā apmaiņas pozīcija nosaka nākamo iterāciju garumu
+    // Bubble sort 2: the last swap position determines the length of the next iterations
     static int bubbleAdaptive(int[] a) {
         int n = a.length, c = 0, newn;
         do {
-            newn = 0; //mainīgais, kurā tiek saglabāts pēdējās veiksmīgās apmaiņas indekss 
+            newn = 0; //variable that stores the index of the last successful exchange
             for (int i = 1; i < n; i++, c++)
                 if (a[i - 1] > a[i]) { swap(a, i - 1, i); newn = i; }
-            n = newn; // turpmāk nav jāsalīdzina pēc pēdējās apmaiņas vietas
+            n = newn; // no need to compare by last exchange location in the future
         } while (n > 0);
         return c;
     }
 
-    // Merge sort: sadala masīvu daļās, kārto tās atsevišķi un tad apvieno
+    // Merge sort: divides an array into parts, sorts them separately, and then combines them
     static int mergeSort(int[] a) {
         return mergeSort(a, 0, a.length - 1, new int[a.length]);
     }
 
-    // Rekursīvi sadala masīvu divās daļās līdz elementiem, pēc tam apvieno
+    // Recursively splits an array into two parts down to the elements, then merges
     static int mergeSort(int[] a, int l, int r, int[] t) {
         if (l >= r) return 0;
         int m = (l + r) / 2, c = 0;
@@ -85,7 +85,7 @@ public class MD4_rogosa {
         return c;
     }
 
-    // Apvieno divas sakārtotas apakšdaļas vienā masīvā, saglabājot kārtošanas secību
+    // Combines two sorted subsets into a single array, preserving the sort order
     static int merge(int[] a, int l, int m, int r, int[] t) {
         int i = l, j = m + 1, k = l, c = 0;
         while (i <= m && j <= r) {
@@ -98,7 +98,7 @@ public class MD4_rogosa {
         return c;
     }
 
-    // Palīgmetode elementu apmaiņai vietām
+    // Helper method for swapping elements
     static void swap(int[] a, int i, int j) {
         int t = a[i]; a[i] = a[j]; a[j] = t;
     }
