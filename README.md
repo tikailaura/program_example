@@ -1,0 +1,1 @@
+Developed a Java application to implement and compare multiple sorting algorithms, including optimized Bubble Sort variations and Merge Sort. Measured performance by counting comparisons and analyzing time complexity. Identified efficiency differences between algorithms and demonstrated optimization techniques. 
